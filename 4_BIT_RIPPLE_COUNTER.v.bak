@@ -1,0 +1,28 @@
+// Module for a single T Flip-Flop (Toggle Flip-Flop)
+module 4_BIT_RIPPLE_COUNTER(
+    output reg q,
+    input clk,
+    input rst
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            q <= 1'b0; // Reset to 0
+        end else begin
+            q <= ~q; // Toggle on positive edge of clock
+        end
+    end
+endmodule
+
+// Module for the 4-bit Ripple Counter
+module ripple_counter_4bit(
+    output reg [3:0] q, // 4-bit output (Q0, Q1, Q2, Q3)
+    input clk,          // External clock input
+    input rst           // Reset input
+);
+    // Instantiate four T flip-flops
+    tff tf0(q[0], clk, rst);    // Q0 toggles on external clock
+    tff tf1(q[1], q[0], rst);   // Q1 toggles on Q0's output (ripple effect)
+    tff tf2(q[2], q[1], rst);   // Q2 toggles on Q1's output
+    tff tf3(q[3], q[2], rst);   // Q3 toggles on Q2's output
+
+endmodule
